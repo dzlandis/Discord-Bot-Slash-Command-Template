@@ -4,7 +4,8 @@ module.exports = {
   name: 'ping',
   description: "Pings the bot and shows API Latency.",
   async execute(interaction) {
-      const ping = new Date().getTime() - interaction.createdTimestamp;
+      const msg = await interaction.deferReply({ fetchReply: true });
+      const ping = msg.createdTimestamp - interaction.createdTimestamp;
       const APILatency = interaction.client.ws.ping
       // npm i @lukeed/ms (basically a hyperfast ms lib)
       const { format } = require('@lukeed/ms');
@@ -16,7 +17,7 @@ module.exports = {
         .addField('<-----🏓----->', '\u200b', true)
         .addField('API Latency', `${APILatency}ms`, true)
         .addField('Uptime:', `${uptime}`, false)
-      interaction.reply({ embeds: [pingEmbed], ephemeral: true})
-      console.log(`Ping: ${ping}ms, API Latency: ${interaction.client.ws.ping}ms, Uptime: ${uptime}`)
+      interaction.editReply({ embeds: [pingEmbed], ephemeral: true})
+      console.log(`Ping: ${ping}ms, API Latency: ${APILatency}ms, Uptime: ${uptime}`)
   }
 }
